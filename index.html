@@ -88,6 +88,8 @@ body.flow .progress{display:none}
 .c2{grid-template-columns:1fr 1fr}
 .c3{grid-template-columns:repeat(3,1fr)}
 .c4{grid-template-columns:repeat(4,1fr)}
+.c1-2{grid-template-columns:1fr 2fr}
+.c1-125{grid-template-columns:1fr 1.25fr;gap:22px}
 .card{border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;background:#fff}
 .card h3{font-size:17px;margin-bottom:8px}
 .card.old{border-top:4px solid var(--old)}
@@ -232,7 +234,15 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
 .tl .what{font-size:13.5px;color:var(--ink-2)}
 
 @media (max-width: 900px){
-  .c2,.c3,.c4,.board,.sh-grid,.plan{grid-template-columns:1fr}
+  .c2,.c3,.c4,.c1-2,.c1-125,.board,.sh-grid,.plan{grid-template-columns:1fr}
+  .cols>*{min-width:0}
+  table.la thead{display:none}
+  table.la,table.la tbody,table.la tr,table.la td{display:block;width:100%}
+  table.la tr{border-bottom:1px solid var(--line);padding:8px 0}
+  table.la td{border:0;padding:2px 0}
+  table.la td:first-child{white-space:normal;color:var(--new)}
+  table.la td:first-child:empty{display:none}
+  table.cmp{table-layout:auto;word-break:break-word}
   body.flow .slide-inner{padding:24px 18px 50px}
   body.flow .foot{left:18px;right:18px}
   .slide h2{font-size:25px}
@@ -439,7 +449,7 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
       <h2>จากวัตถุประสงค์ข้อเดียว สู่ PEOs 6 ข้อ</h2>
       <p class="lead">หลักสูตร 2569 กำหนดวัตถุประสงค์ในรูป Program Educational Objectives (PEOs) ที่บอกว่าบัณฑิตจะทำอะไรได้ในวิชาชีพ</p>
     </div>
-    <div class="cols" style="grid-template-columns:1fr 2fr;gap:18px">
+    <div class="cols c1-2">
       <div class="card old soft">
         <h3><span class="tag old">2564</span>&nbsp; วัตถุประสงค์</h3>
         <p class="small">ผลิตบัณฑิตที่มีความรู้ ความสามารถ และประสบการณ์จากสถานการณ์จริง สร้างซอฟต์แวร์หรือระบบสารสนเทศที่ใช้ประโยชน์เชิงพาณิชย์หรือพัฒนาสังคม มีจริยธรรม ทำงานในสังคมพหุวัฒนธรรม มีทักษะศตวรรษที่ 21 ก้าวทันเทคโนโลยีที่พลิกผัน พัฒนาตนเอง และบูรณาการกับศาสตร์อื่น</p>
@@ -833,7 +843,7 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
       <div class="eyebrow">อาชีพหลังสำเร็จการศึกษา</div>
       <h2>จากรายชื่ออาชีพ สู่สายงาน 7 กลุ่ม</h2>
     </div>
-    <div class="cols" style="grid-template-columns:1fr 1.25fr;gap:22px">
+    <div class="cols c1-125">
       <div class="card old">
         <h3><span class="tag old">2564</span>&nbsp; 18 อาชีพ</h3>
         <ul class="cl">
@@ -913,11 +923,34 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
   function store(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
   function load(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
 
+  // Lowest text bottom inside a slide, in unscaled slide pixels.
+  function contentBottom(el){
+    var top = el.getBoundingClientRect().top, sc = el.getBoundingClientRect().height / H || 1, max = 0;
+    var w = document.createTreeWalker(el.querySelector('.slide-inner'), NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) {
+      if (!n.textContent.trim()) continue;
+      var r = document.createRange(); r.selectNodeContents(n);
+      var b = r.getBoundingClientRect();
+      if (b.height) max = Math.max(max, (b.bottom - top) / sc);
+    }
+    return max;
+  }
+  // Shrink a slide's content step by step if it would run into the footer.
+  function shrinkToFit(el){
+    var inner = el.querySelector('.slide-inner');
+    inner.style.zoom = '';
+    var limit = el.querySelector('.foot') ? H - 44 : H - 16, z = 1;
+    while (contentBottom(el) > limit && z > 0.7) {
+      z -= 0.04;
+      inner.style.zoom = z;
+    }
+  }
   function fit(){
     if (!body.classList.contains('present')) return;
     var s = Math.min(window.innerWidth / W, (window.innerHeight - 8) / H) * 0.96;
     slides.forEach(function(el){
       el.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+      shrinkToFit(el);
     });
   }
   function show(i){
@@ -931,7 +964,7 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
     body.classList.remove('present', 'flow');
     body.classList.add(m);
     modeBtn.textContent = m === 'present' ? 'มุมมองเลื่อนอ่าน' : 'มุมมองสไลด์';
-    slides.forEach(function(el){ el.style.transform = ''; });
+    slides.forEach(function(el){ el.style.transform = ''; el.querySelector('.slide-inner').style.zoom = ''; });
     if (m === 'present') { fit(); show(idx); }
     else { window.scrollTo(0, slides[idx].offsetTop - 60); }
   }
@@ -971,6 +1004,7 @@ table.la td:first-child{font-weight:600;white-space:nowrap}
     tx = null;
   });
   window.addEventListener('resize', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   window.addEventListener('beforeprint', function(){ slides.forEach(function(el){ el.style.transform = 'none'; }); });
   window.addEventListener('afterprint', fit);
 })();
