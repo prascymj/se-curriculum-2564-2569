@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หลักสูตร SE 2564 และ 2569</title>
+<meta name="description" content="นำเสนอหลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิชาวิศวกรรมซอฟต์แวร์ มหาวิทยาลัยแม่ฟ้าหลวง ฉบับ พ.ศ. 2564 และฉบับปรับปรุง พ.ศ. 2569 สำหรับผู้มีส่วนได้เสีย">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202e;
+  --ink-2:#3d4a5c;
+  --muted:#6b7686;
+  --line:#dfe3ea;
+  --paper:#ffffff;
+  --bg:#eef1f5;
+  --soft:#f6f7fa;
+  --old:#5d6b80;        /* 2564 */
+  --old-soft:#e8ecf2;
+  --new:#a3162b;        /* 2569, MFU red */
+  --new-soft:#fbecee;
+  --gold:#b88a1b;
+  --gold-soft:#fbf4e2;
+  --ok:#1f6f4f;
+  --ok-soft:#e5f3ec;
+  --warn:#8a5a00;
+  --warn-soft:#fdf1dc;
+  --cut:#7a2a2a;
+  --cut-soft:#f6e7e7;
+  --radius:10px;
+  --font:"IBM Plex Sans Thai","Sarabun","Noto Sans Thai","Leelawadee UI",Tahoma,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;line-height:1.4;font-weight:700}
+p{margin:0}
+ul{margin:0;padding-left:1.1em}
+li{margin:.12em 0}
+.en{color:var(--muted);font-size:.86em}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag.old{background:var(--old-soft);color:var(--old)}
+.tag.new{background:var(--new-soft);color:var(--new)}
+.tag.gold{background:var(--gold-soft);color:var(--gold)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.cut{background:var(--cut-soft);color:var(--cut)}
+
+/* ---------- slide shell ---------- */
+.slide{background:var(--paper);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.slide-inner{flex:1;display:flex;flex-direction:column;padding:44px 56px 56px}
+.eyebrow{font-size:13px;font-weight:600;color:var(--new);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.slide h2{font-size:32px;margin-bottom:6px}
+.lead{font-size:17px;color:var(--ink-2);max-width:980px}
+.head{margin-bottom:22px}
+.foot{position:absolute;left:56px;right:56px;bottom:16px;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.grow{flex:1;min-height:0}
+
+/* ---------- present mode ---------- */
+body.present{overflow:hidden;height:100vh}
+body.present .deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+body.present .slide{position:absolute;width:1280px;height:720px;left:50%;top:50%;transform-origin:center center;box-shadow:0 10px 40px rgba(22,32,46,.18);border-radius:6px;visibility:hidden;opacity:0;transition:opacity .25s ease}
+body.present .slide.active{visibility:visible;opacity:1}
+
+/* ---------- flow mode ---------- */
+body.flow .deck{max-width:1080px;margin:0 auto;padding:64px 16px 40px}
+body.flow .slide{border-radius:10px;margin-bottom:22px;box-shadow:0 2px 10px rgba(22,32,46,.07)}
+body.flow .slide-inner{padding:30px 32px 52px}
+body.flow .foot{left:32px;right:32px}
+
+/* ---------- toolbar ---------- */
+.bar{position:fixed;z-index:20;display:flex;gap:6px;align-items:center;font-size:13px}
+body.present .bar{right:16px;bottom:14px}
+body.flow .bar{top:0;left:0;right:0;justify-content:flex-end;padding:10px 16px;background:rgba(238,241,245,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.bar .brand{margin-right:auto;font-weight:600;color:var(--ink-2);display:none}
+body.flow .bar .brand{display:block}
+.btn{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 12px;border-radius:7px;cursor:pointer}
+.btn:hover{border-color:var(--ink-2)}
+.btn:focus-visible{outline:2px solid var(--new);outline-offset:2px}
+.counter{min-width:64px;text-align:center;color:var(--ink-2);background:#fff;border:1px solid var(--line);border-radius:7px;padding:6px 8px}
+body.flow .nav-only{display:none}
+.progress{position:fixed;left:0;top:0;height:3px;background:var(--new);z-index:21;transition:width .25s ease}
+body.flow .progress{display:none}
+
+/* ---------- components ---------- */
+.cols{display:grid;gap:18px}
+.c2{grid-template-columns:1fr 1fr}
+.c3{grid-template-columns:repeat(3,1fr)}
+.c4{grid-template-columns:repeat(4,1fr)}
+.card{border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;background:#fff}
+.card h3{font-size:17px;margin-bottom:8px}
+.card.old{border-top:4px solid var(--old)}
+.card.new{border-top:4px solid var(--new)}
+.card.soft{background:var(--soft)}
+.card .count{font-size:13px;color:var(--muted);font-weight:500}
+.small{font-size:14px}
+.xsmall{font-size:13px}
+.stat{border-left:4px solid var(--new);padding:4px 0 4px 14px}
+.stat .num{font-size:38px;font-weight:700;line-height:1.1}
+.stat .num .from{color:var(--old);font-size:26px;font-weight:600}
+.stat .lbl{font-size:14px;color:var(--ink-2)}
+.arrow{color:var(--muted);font-weight:400;padding:0 4px}
+
+table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;table-layout:fixed}
+table.cmp th,table.cmp td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top;text-align:left}
+table.cmp thead th{font-size:13px;font-weight:600;color:var(--muted);border-bottom:2px solid var(--ink)}
+table.cmp thead th.o{color:var(--old)}
+table.cmp thead th.n{color:var(--new)}
+table.cmp td.k{font-weight:600;color:var(--ink-2)}
+table.cmp td.n{background:#fffafa}
+
+/* title slide */
+.title-slide .slide-inner{justify-content:center;padding:64px 80px}
+.title-slide .org{font-size:16px;color:var(--ink-2);font-weight:500}
+.title-slide h1{font-size:46px;margin:14px 0 10px}
+.title-slide .sub{font-size:20px;color:var(--ink-2)}
+.yearpair{display:flex;align-items:center;gap:18px;margin:34px 0 26px}
+.yr{border-radius:12px;padding:14px 22px;min-width:200px}
+.yr .y{font-size:40px;font-weight:700;line-height:1}
+.yr .d{font-size:14px;margin-top:6px}
+.yr.old{background:var(--old-soft);color:var(--old)}
+.yr.new{background:var(--new);color:#fff}
+.yr.new .d{color:#fde7ea}
+.yarrow{font-size:30px;color:var(--muted)}
+.title-slide .hint{font-size:14px;color:var(--muted)}
+.title-band{position:absolute;right:0;top:0;bottom:0;width:14px;background:linear-gradient(var(--new),var(--gold))}
+
+/* PLO */
+.plo{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line)}
+.plo:last-child{border-bottom:0}
+.plo .id{flex:0 0 52px;font-weight:700;font-size:14px;padding-top:1px}
+.old .plo .id{color:var(--old)}
+.new .plo .id{color:var(--new)}
+.plo .t{font-size:14.5px}
+.plo .t .en{display:block}
+
+/* credit bars */
+.bars{display:flex;flex-direction:column;gap:22px;margin-top:6px}
+.barrow .lab{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px}
+.stack{display:flex;height:46px;border-radius:8px;overflow:hidden}
+.seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;border-right:2px solid #fff}
+.seg:last-child{border-right:0}
+.s-ge{background:#7d8aa0}
+.s-base{background:#b88a1b}
+.s-core{background:#a3162b}
+.s-elec{background:#d06a78}
+.s-field{background:#1f6f4f}
+.s-free{background:#3d4a5c}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.delta{font-weight:700}
+.delta.up{color:var(--ok)}
+.delta.down{color:var(--cut)}
+
+/* change board */
+.board{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;gap:14px}
+.lane{border-radius:var(--radius);padding:12px 14px;border:1px solid var(--line)}
+.lane h3{font-size:15px;margin-bottom:2px}
+.lane .note{font-size:12px;color:var(--muted);margin-bottom:8px}
+.lane ul{list-style:none;padding:0}
+.lane li{font-size:13.5px;padding:3px 0;border-bottom:1px solid rgba(0,0,0,.05);line-height:1.35}
+.lane li:last-child{border-bottom:0}
+.lane.keep{background:var(--soft)}
+.lane.move{background:var(--gold-soft);border-color:#ecdcae}
+.lane.add{background:var(--ok-soft);border-color:#c5e3d3}
+.lane.cut{background:var(--cut-soft);border-color:#ebcaca}
+.lane.keep h3{color:var(--ink-2)}
+.lane.move h3{color:var(--gold)}
+.lane.add h3{color:var(--ok)}
+.lane.cut h3{color:var(--cut)}
+.lane .n{float:right;font-weight:700}
+
+/* electives */
+.theme{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.theme h4{font-size:14.5px;margin-bottom:6px;color:var(--ink)}
+.theme ul{list-style:none;padding:0}
+.theme li{font-size:13.5px;line-height:1.35;padding:2px 0;display:flex;gap:6px;align-items:baseline}
+.theme li .tag{font-size:11px;padding:1px 6px}
+
+/* study plan */
+.plan{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.yearcol{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.yearcol .yh{background:var(--ink);color:#fff;font-weight:600;padding:6px 12px;font-size:14px}
+.sem{padding:8px 12px;border-top:1px solid var(--line)}
+.sem:first-of-type{border-top:0}
+.sem .sh{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
+.sem ul{list-style:none;padding:0}
+.sem li{font-size:12.5px;line-height:1.3;padding:2px 0 2px 8px;border-left:3px solid transparent}
+.sem li.se{border-left-color:var(--new)}
+.sem li.nw{border-left-color:var(--ok)}
+.sem li.ge{border-left-color:#9aa5b5;color:var(--ink-2)}
+.sem li.el{border-left-color:var(--gold);color:var(--ink-2)}
+
+/* stakeholders */
+.sh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.shc{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.shc .who{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.shc .who b{font-size:15px}
+.shc .who span{font-size:13px;color:var(--new);font-weight:700}
+.shc p{font-size:13.5px;color:var(--ink-2);line-height:1.45}
+.respond{margin-top:14px;background:var(--new-soft);border-radius:var(--radius);padding:12px 16px;font-size:14px}
+.respond b{color:var(--new)}
+
+/* drivers */
+.driver{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+.driver:last-child{border-bottom:0}
+.driver .no{flex:0 0 34px;height:34px;border-radius:50%;background:var(--new-soft);color:var(--new);font-weight:700;display:flex;align-items:center;justify-content:center}
+.driver h4{font-size:16px;margin-bottom:2px}
+.driver p{font-size:14px;color:var(--ink-2)}
+
+/* learning approach */
+table.la{width:100%;border-collapse:collapse;font-size:14px}
+table.la th,table.la td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+table.la thead th{font-size:13px;color:var(--muted);border-bottom:2px solid var(--ink)}
+table.la td:first-child{font-weight:600;white-space:nowrap}
+
+/* careers */
+.track{margin-bottom:9px}
+.track b{font-size:14px;color:var(--new)}
+.track div{font-size:13.5px;color:var(--ink-2)}
+.cl{columns:2;column-gap:22px;font-size:13.5px;color:var(--ink-2)}
+.cl li{break-inside:avoid}
+
+/* closing */
+.timeline{display:flex;align-items:stretch;gap:0;margin:8px 0 22px}
+.tl{flex:1;padding:14px 16px;border-top:4px solid var(--old);background:var(--soft)}
+.tl + .tl{border-left:1px solid #fff}
+.tl.n{border-top-color:var(--new);background:var(--new-soft)}
+.tl .when{font-weight:700;font-size:15px}
+.tl .what{font-size:13.5px;color:var(--ink-2)}
+
+@media (max-width: 900px){
+  .c2,.c3,.c4,.board,.sh-grid,.plan{grid-template-columns:1fr}
+  body.flow .slide-inner{padding:24px 18px 50px}
+  body.flow .foot{left:18px;right:18px}
+  .slide h2{font-size:25px}
+  .title-slide .slide-inner{padding:40px 22px 60px}
+  .title-slide h1{font-size:32px}
+  .yearpair{flex-wrap:wrap}
+  .yr{min-width:0;flex:1}
+  .yarrow{display:none}
+  table.cmp{font-size:13.5px}
+  table.cmp th,table.cmp td{padding:7px 6px}
+  .cl{columns:1}
+  .stat .num{font-size:32px}
+  .timeline{flex-direction:column}
+  .tl + .tl{border-left:0;border-top-width:4px}
+  .seg{font-size:11px}
+}
+@media print{
+  body{background:#fff}
+  .bar,.progress{display:none!important}
+  body.present,body.flow{overflow:visible;height:auto}
+  body.present .deck,body.flow .deck{position:static;display:block;max-width:none;padding:0}
+  .slide,body.present .slide,body.flow .slide{position:relative!important;visibility:visible!important;opacity:1!important;transform:none!important;left:auto!important;top:auto!important;width:100%!important;height:auto!important;box-shadow:none!important;margin:0!important;border-radius:0;break-after:page}
+}
+</style>
+</head>
+<body class="present">
+<div class="progress" id="progress"></div>
+<div class="bar" role="toolbar" aria-label="ตัวควบคุมการนำเสนอ">
+  <span class="brand">หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ 2564 และ 2569</span>
+  <button class="btn nav-only" id="prev" aria-label="สไลด์ก่อนหน้า">ก่อนหน้า</button>
+  <span class="counter nav-only" id="counter">1 / 1</span>
+  <button class="btn nav-only" id="next" aria-label="สไลด์ถัดไป">ถัดไป</button>
+  <button class="btn" id="mode">มุมมองเลื่อนอ่าน</button>
+</div>
+
+<main class="deck" id="deck">
+
+<!-- 1 ======================================================= -->
+<section class="slide title-slide" data-title="หน้าแรก">
+  <div class="title-band"></div>
+  <div class="slide-inner">
+    <div class="org">สำนักวิชาเทคโนโลยีดิจิทัลประยุกต์ มหาวิทยาลัยแม่ฟ้าหลวง</div>
+    <h1>หลักสูตรวิศวกรรมศาสตรบัณฑิต<br>สาขาวิชาวิศวกรรมซอฟต์แวร์</h1>
+    <div class="sub">Bachelor of Engineering Program in Software Engineering</div>
+    <div class="yearpair">
+      <div class="yr old"><div class="y">2564</div><div class="d">หลักสูตรปรับปรุง พ.ศ. 2564<br>126 หน่วยกิต, 6 PLOs</div></div>
+      <div class="yarrow">→</div>
+      <div class="yr new"><div class="y">2569</div><div class="d">หลักสูตรปรับปรุง พ.ศ. 2569<br>124 หน่วยกิต, 5 PLOs, 6 PEOs</div></div>
+    </div>
+    <p class="lead">เอกสารนำเสนอสำหรับผู้มีส่วนได้เสีย: ผู้ทรงคุณวุฒิ ผู้ใช้บัณฑิต ศิษย์เก่า อาจารย์ นักศึกษา และผู้ปกครอง เพื่อแสดงสาระของหลักสูตรทั้งสองฉบับและสิ่งที่เปลี่ยนแปลง</p>
+    <p class="hint" style="margin-top:22px">ใช้ปุ่มลูกศรซ้าย/ขวา หรือปุ่มด้านล่างเพื่อเปลี่ยนสไลด์ หรือกด "มุมมองเลื่อนอ่าน" เพื่ออ่านต่อเนื่อง</p>
+  </div>
+</section>
+
+<!-- 2 ======================================================= -->
+<section class="slide" data-title="สาระสำคัญโดยสรุป">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">สาระสำคัญโดยสรุป</div>
+      <h2>หลักสูตร 2569 ปรับจาก 2564 อย่างไร</h2>
+      <p class="lead">ปรับจาก "ผู้เขียนโปรแกรม" สู่ "วิศวกรผู้ออกแบบระบบเพื่อแก้ปัญหาทางธุรกิจ" โดยเพิ่ม AI, Cloud-Native และความมั่นคงปลอดภัยเป็นวิชาบังคับ</p>
+    </div>
+    <div class="cols c4" style="margin-bottom:26px">
+      <div class="stat"><div class="num"><span class="from">126</span><span class="arrow">→</span>124</div><div class="lbl">หน่วยกิตรวมตลอดหลักสูตร</div></div>
+      <div class="stat"><div class="num"><span class="from">63</span><span class="arrow">→</span>67</div><div class="lbl">หน่วยกิตกลุ่มวิชาชีพบังคับ</div></div>
+      <div class="stat"><div class="num">24</div><div class="lbl">รายวิชาเปิดใหม่ (บังคับ 7, เลือก 17)</div></div>
+      <div class="stat"><div class="num"><span class="from">6</span><span class="arrow">→</span>5</div><div class="lbl">PLOs กระชับขึ้น และเพิ่ม PEOs 6 ข้อ</div></div>
+    </div>
+    <div class="cols c2 grow">
+      <div class="card new">
+        <h3>สิ่งที่เพิ่มหรือเน้นมากขึ้น</h3>
+        <ul class="small">
+          <li>การพัฒนาแอปพลิเคชัน AI (เน้น LLM และ Generative AI) เป็นวิชาบังคับ</li>
+          <li>วิศวกรรมแพลตฟอร์มและการพัฒนาแบบ Cloud-Native เป็นวิชาบังคับ</li>
+          <li>ความมั่นคงปลอดภัยซอฟต์แวร์ และการคำนวณเชิงปัญญา ย้ายจากวิชาเลือกเป็นวิชาบังคับ</li>
+          <li>Full Stack และ Cross-Platform Development แทนการแยกเว็บกับมือถือ</li>
+          <li>โครงงานบูรณาการอุตสาหกรรม (Industry Integration Project) 9 หน่วยกิต</li>
+          <li>วิชาเลือกใหม่ เช่น Large Language Models, AI for Software Engineering, Software Architecture</li>
+        </ul>
+      </div>
+      <div class="card old">
+        <h3>สิ่งที่คงไว้</h3>
+        <ul class="small">
+          <li>ปริญญาเดิม: วศ.บ. (วิศวกรรมซอฟต์แวร์) / B.Eng. (Software Engineering)</li>
+          <li>แกนวิศวกรรมซอฟต์แวร์ครบวงจร: ความต้องการ ออกแบบ ทดสอบ ประกันคุณภาพ บริหารโครงการ</li>
+          <li>แนวคิด Constructivism และการเรียนรู้จากโครงงานจริง</li>
+          <li>ประสบการณ์ภาคสนาม 9 หน่วยกิต: สหกิจศึกษา หรือ ฝึกงานต่างประเทศ</li>
+          <li>วิชาเลือกเสรี 6 หน่วยกิต และวิชาชีพเลือก 9 หน่วยกิต</li>
+          <li>จัดการเรียนการสอนเป็นภาษาอังกฤษเป็นหลัก รับนักศึกษาไทยและต่างชาติ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 3 ======================================================= -->
+<section class="slide" data-title="ข้อมูลทั่วไป">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">ข้อมูลทั่วไปของหลักสูตร</div>
+      <h2>เปรียบเทียบข้อมูลพื้นฐาน</h2>
+    </div>
+    <table class="cmp">
+      <colgroup><col style="width:22%"><col style="width:39%"><col style="width:39%"></colgroup>
+      <thead><tr><th>รายการ</th><th class="o">ฉบับ พ.ศ. 2564</th><th class="n">ฉบับปรับปรุง พ.ศ. 2569</th></tr></thead>
+      <tbody>
+        <tr><td class="k">ชื่อปริญญา</td><td colspan="2">วิศวกรรมศาสตรบัณฑิต (วิศวกรรมซอฟต์แวร์), วศ.บ. (วิศวกรรมซอฟต์แวร์) <span class="en">Bachelor of Engineering (Software Engineering), B.Eng. (Software Engineering)</span></td></tr>
+        <tr><td class="k">หน่วยงาน</td><td>สำนักวิชาเทคโนโลยีสารสนเทศ</td><td class="n">สำนักวิชาเทคโนโลยีดิจิทัลประยุกต์</td></tr>
+        <tr><td class="k">หน่วยกิตรวม</td><td>126 หน่วยกิต</td><td class="n">ไม่น้อยกว่า 124 หน่วยกิต</td></tr>
+        <tr><td class="k">ภาษาที่ใช้</td><td>ภาษาไทยและภาษาต่างประเทศ โดยใช้ภาษาอังกฤษเป็นหลัก</td><td class="n">ภาษาอังกฤษ (ภาษาไทยสำหรับรายวิชาภาษาไทยและกฎหมาย)</td></tr>
+        <tr><td class="k">สถานภาพ</td><td>ปรับปรุงจาก วท.บ. วิศวกรรมซอฟต์แวร์ พ.ศ. 2559</td><td class="n">ปรับปรุงจาก วศ.บ. วิศวกรรมซอฟต์แวร์ พ.ศ. 2564</td></tr>
+        <tr><td class="k">การอนุมัติและเริ่มใช้</td><td>เริ่มใช้ภาคการศึกษาต้น ปีการศึกษา 2564</td><td class="n">สภาวิชาการเห็นชอบ 3 ธันวาคม 2568, สภามหาวิทยาลัยอนุมัติ ครั้งที่ 1/2569 (21 มกราคม 2569), เริ่มใช้ภาคการศึกษาต้น ปีการศึกษา 2569</td></tr>
+        <tr><td class="k">กรอบมาตรฐาน</td><td>มาตรฐานคุณวุฒิระดับปริญญาตรี สาขาวิศวกรรมคอมพิวเตอร์ พ.ศ. 2552</td><td class="n">เกณฑ์มาตรฐานหลักสูตรระดับปริญญาตรี พ.ศ. 2565 (ผลลัพธ์ 4 ด้าน: ความรู้ ทักษะ จริยธรรม ลักษณะบุคคล)</td></tr>
+        <tr><td class="k">ผลลัพธ์การเรียนรู้</td><td>PLO 6 ข้อ</td><td class="n">PEO 6 ข้อ และ PLO 5 ข้อ</td></tr>
+        <tr><td class="k">รูปแบบ</td><td colspan="2">ปริญญาตรีทางวิชาการ 4 ปี, รับนักศึกษาไทยและต่างประเทศ, ให้ปริญญาเฉพาะมหาวิทยาลัยแม่ฟ้าหลวง</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 4 ======================================================= -->
+<section class="slide" data-title="เหตุผลในการปรับปรุง">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">เหตุผลในการปรับปรุง</div>
+      <h2>ปัจจัยที่ขับเคลื่อนหลักสูตร 2569</h2>
+    </div>
+    <div class="cols c2 grow" style="gap:34px">
+      <div>
+        <div class="driver"><div class="no">1</div><div><h4>เศรษฐกิจที่ขับเคลื่อนด้วยข้อมูลและ AI</h4><p>แผนปฏิบัติการด้านปัญญาประดิษฐ์แห่งชาติ และแนวโน้ม Gartner 2025: AI-Augmented Development และ AI Trust, Risk and Security Management (AI TRiSM)</p></div></div>
+        <div class="driver"><div class="no">2</div><div><h4>บทบาทวิศวกรซอฟต์แวร์เปลี่ยนไป</h4><p>จากผู้ปฏิบัติงานเขียนโปรแกรม (Programmer) สู่ผู้ออกแบบระบบเพื่อแก้ปัญหาทางธุรกิจ (Business-Oriented Solution Architect) ที่ต้องมีทักษะผสม (Hybrid Skills)</p></div></div>
+        <div class="driver"><div class="no">3</div><div><h4>เศรษฐกิจสีเขียวและความยั่งยืน</h4><p>นโยบาย BCG และรายงาน The Future of Jobs 2025 (World Economic Forum) ชี้ว่าเศรษฐกิจสีเขียวและเทคโนโลยีดิจิทัลเป็นแหล่งงานแห่งอนาคต</p></div></div>
+      </div>
+      <div>
+        <div class="driver"><div class="no">4</div><div><h4>มาตรฐานและกฎหมายวิชาชีพ</h4><p>PDPA และ GDPR, มาตรฐานความมั่นคงปลอดภัยไซเบอร์, จรรยาบรรณวิศวกรซอฟต์แวร์ IEEE/ACM และองค์ความรู้ SWEBOK</p></div></div>
+        <div class="driver"><div class="no">5</div><div><h4>ผลการดำเนินงานของหลักสูตรเดิม</h4><p>อัตราการสำเร็จการศึกษาสูงกว่าเกณฑ์ (82% ในปี 2563) และอัตราการมีงานทำ 86.96% (บัณฑิตปีการศึกษา 2565) แต่ยังพบการจบล่าช้าจาก Exit Exam การเปลี่ยนสาขา และการถอนรายวิชา</p></div></div>
+        <div class="driver"><div class="no">6</div><div><h4>ความต้องการของผู้มีส่วนได้เสีย</h4><p>ต้องการ AI, Cloud, Cybersecurity, DevOps, การเรียนรู้จากโครงงานจริง และ Soft Skills (การสื่อสาร การทำงานเป็นทีม การปรับตัว)</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 5 ======================================================= -->
+<section class="slide" data-title="เสียงของผู้มีส่วนได้เสีย">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">ผู้มีส่วนได้เสีย</div>
+      <h2>สิ่งที่ผู้มีส่วนได้เสียคาดหวังจากบัณฑิต</h2>
+      <p class="lead">เก็บข้อมูลด้วยแบบสอบถามจาก 5 กลุ่ม รวม 250 คน และวิเคราะห์เอกสารขององค์กรวิชาชีพ</p>
+    </div>
+    <div class="sh-grid">
+      <div class="shc"><div class="who"><b>ผู้ทรงคุณวุฒิ/นักวิชาการ</b><span>5 คน</span></div><p>Software Architecture, AI, Cloud, Cybersecurity, Data Engineering, ความตระหนักด้านกฎหมาย IT (PDPA), การพัฒนาซอฟต์แวร์จริงผ่านโครงงาน</p></div>
+      <div class="shc"><div class="who"><b>ผู้ใช้บัณฑิต</b><span>29 คน</span></div><p>ภาษาอังกฤษในการทำงาน, AI literacy และ Prompt Engineering, DevOps, Git, CI/CD, Software Testing และ Automation, SQL, UX/UI, Cloud</p></div>
+      <div class="shc"><div class="who"><b>ศิษย์เก่า</b><span>17 คน</span></div><p>Web Development, AI, Cybersecurity, ฐานข้อมูล, Cloud, DevSecOps, แนวปฏิบัติ Agile, ทักษะการดีบัก และการเรียนรู้ด้วยตนเอง</p></div>
+      <div class="shc"><div class="who"><b>อาจารย์</b><span>5 คน</span></div><p>AI, Cybersecurity, UX/UI, Prompt Engineering, จริยธรรมดิจิทัล, ความสามารถในการปรับตัวและการทำงานร่วมกัน</p></div>
+      <div class="shc"><div class="who"><b>นักศึกษาปัจจุบัน</b><span>194 คน</span></div><p>ภาษาอังกฤษ, กระบวนการพัฒนาซอฟต์แวร์ (SDLC), การเรียนรู้เชิงปฏิบัติ และโครงงานจากปัญหาจริง</p></div>
+      <div class="shc"><div class="who"><b>องค์กรวิชาชีพ</b><span>SWEBOK</span></div><p>Software Architecture, Software Engineering Operations, ความมั่นคงปลอดภัย, ML และ Data, ผลกระทบของเทคโนโลยีต่อสังคมและความเป็นส่วนตัวของข้อมูล</p></div>
+    </div>
+    <div class="respond"><b>หลักสูตร 2569 ตอบสนองด้วย:</b> วิชาบังคับการพัฒนาแอปพลิเคชัน AI, วิศวกรรมแพลตฟอร์มและ Cloud-Native, ความมั่นคงปลอดภัยซอฟต์แวร์, Full Stack Development, วิชาเลือก LLM และ AI for SE, PLO ด้านจรรยาบรรณและการปรับตัว และโครงงานบูรณาการอุตสาหกรรม</div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 6 ======================================================= -->
+<section class="slide" data-title="ปรัชญาหลักสูตร">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">ปรัชญาและแนวคิดการจัดการศึกษา</div>
+      <h2>จากกระบวนการพัฒนาซอฟต์แวร์ สู่บัณฑิตที่ปรับตัวได้</h2>
+    </div>
+    <div class="cols c2 grow">
+      <div class="card old">
+        <h3><span class="tag old">2564</span>&nbsp; ปรัชญาหลักสูตร</h3>
+        <ul class="small">
+          <li>วิศวกรรมซอฟต์แวร์คือกระบวนการทางวิศวกรรมตั้งแต่ระบุความต้องการ ออกแบบ พัฒนา ทดสอบ บริหารโครงการ ควบคุมคุณภาพ และความมั่นคงของระบบ</li>
+          <li>ยึดทฤษฎีการสร้างความรู้ด้วยตนเอง (Constructivism) ฝึกคิดเชิงวิพากษ์และแก้ปัญหาอย่างเป็นระบบ</li>
+          <li>จัดการเรียนการสอนด้วยโครงงานเป็นฐาน (Project-Based Learning)</li>
+          <li>มุ่งผลิตวิศวกรซอฟต์แวร์ที่สร้างสรรค์ มีคุณธรรม ตอบสนองอุตสาหกรรมซอฟต์แวร์และเศรษฐกิจดิจิทัล ภายใต้นโยบายประเทศไทย 4.0</li>
+        </ul>
+      </div>
+      <div class="card new">
+        <h3><span class="tag new">2569</span>&nbsp; ปรัชญาหลักสูตร</h3>
+        <ul class="small">
+          <li>ต่อยอดจากปรัชญาการศึกษาของมหาวิทยาลัย: ความเป็นพลเมืองโลก การศึกษาที่มุ่งผลลัพธ์ (OBE) และการเรียนรู้ตลอดชีวิต</li>
+          <li>พัฒนาผู้เรียนให้ปรับตัวได้ (Adaptive) และรับมือกับ Disruptive Technology</li>
+          <li>คง Constructivist Theory โดยบูรณาการทฤษฎีการออกแบบซอฟต์แวร์กับทักษะปฏิบัติด้านการพัฒนาและบริหารโครงการ</li>
+          <li>เสริมการคิดเชิงระบบ การสื่อสารและการเจรจา การจัดการความขัดแย้งอย่างสร้างสรรค์</li>
+          <li>เน้นจริยธรรมวิชาชีพ และการใช้เทคโนโลยีอย่างรับผิดชอบและโปร่งใส</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 7 ======================================================= -->
+<section class="slide" data-title="วัตถุประสงค์หลักสูตร">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">วัตถุประสงค์ของหลักสูตร</div>
+      <h2>จากวัตถุประสงค์ข้อเดียว สู่ PEOs 6 ข้อ</h2>
+      <p class="lead">หลักสูตร 2569 กำหนดวัตถุประสงค์ในรูป Program Educational Objectives (PEOs) ที่บอกว่าบัณฑิตจะทำอะไรได้ในวิชาชีพ</p>
+    </div>
+    <div class="cols" style="grid-template-columns:1fr 2fr;gap:18px">
+      <div class="card old soft">
+        <h3><span class="tag old">2564</span>&nbsp; วัตถุประสงค์</h3>
+        <p class="small">ผลิตบัณฑิตที่มีความรู้ ความสามารถ และประสบการณ์จากสถานการณ์จริง สร้างซอฟต์แวร์หรือระบบสารสนเทศที่ใช้ประโยชน์เชิงพาณิชย์หรือพัฒนาสังคม มีจริยธรรม ทำงานในสังคมพหุวัฒนธรรม มีทักษะศตวรรษที่ 21 ก้าวทันเทคโนโลยีที่พลิกผัน พัฒนาตนเอง และบูรณาการกับศาสตร์อื่น</p>
+      </div>
+      <div class="card new">
+        <h3><span class="tag new">2569</span>&nbsp; Program Educational Objectives</h3>
+        <div class="cols c2" style="gap:6px 22px">
+          <div class="plo"><div class="id" style="color:var(--new)">PEO1</div><div class="t">ความรู้และความเชี่ยวชาญวิศวกรรมซอฟต์แวร์ครบวงจร ตามมาตรฐานวิชาชีพระดับสากล</div></div>
+          <div class="plo"><div class="id" style="color:var(--new)">PEO2</div><div class="t">ประยุกต์เทคโนโลยีสมัยใหม่และนวัตกรรม ปรับตัวต่อเทคโนโลยีที่เปลี่ยนเร็ว</div></div>
+          <div class="plo"><div class="id" style="color:var(--new)">PEO3</div><div class="t">คิดวิเคราะห์และแก้ปัญหาเชิงสร้างสรรค์ในสถานการณ์ที่ซับซ้อน</div></div>
+          <div class="plo"><div class="id" style="color:var(--new)">PEO4</div><div class="t">สื่อสาร ทำงานเป็นทีม และจัดการความขัดแย้ง กับคนหลากหลายสาขาและวัฒนธรรม</div></div>
+          <div class="plo"><div class="id" style="color:var(--new)">PEO5</div><div class="t">ยึดมั่นจริยธรรมวิชาชีพ ใช้เทคโนโลยีอย่างโปร่งใส คำนึงถึงผู้ใช้ ชุมชน และสิ่งแวดล้อม</div></div>
+          <div class="plo"><div class="id" style="color:var(--new)">PEO6</div><div class="t">เรียนรู้ตลอดชีวิต เพื่อเติบโตในสายอาชีพและรับความเปลี่ยนแปลงของเทคโนโลยี</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 8 ======================================================= -->
+<section class="slide" data-title="ผลลัพธ์การเรียนรู้ PLOs">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">ผลลัพธ์การเรียนรู้ระดับหลักสูตร (PLOs)</div>
+      <h2>PLO 6 ข้อ สู่ 5 ข้อที่วัดผลได้ชัดเจนขึ้น</h2>
+    </div>
+    <div class="cols c2 grow">
+      <div class="card old">
+        <h3><span class="tag old">2564</span>&nbsp; 6 PLOs</h3>
+        <div class="plo"><div class="id">PLO1</div><div class="t">ซื่อสัตย์ เคารพความเป็นส่วนตัวของผู้อื่น รับผิดชอบต่อหน้าที่และวิชาชีพ</div></div>
+        <div class="plo"><div class="id">PLO2</div><div class="t">อภิปรายเชื่อมโยงเทคโนโลยีและวิธีการทางซอฟต์แวร์ การเป็นผู้ประกอบการ และเทคโนโลยีกำเนิดใหม่</div></div>
+        <div class="plo"><div class="id">PLO3</div><div class="t">ออกแบบสถาปัตยกรรมซอฟต์แวร์หรือระบบสารสนเทศ โดยบูรณาการกับศาสตร์อื่น</div></div>
+        <div class="plo"><div class="id">PLO4</div><div class="t">มีภาวะผู้นำและผู้ตามที่ดี ทำงานร่วมกับผู้อื่นในสังคมพหุวัฒนธรรม</div></div>
+        <div class="plo"><div class="id">PLO5</div><div class="t">วิเคราะห์เชิงตัวเลข เลือกใช้เครื่องมือพัฒนาซอฟต์แวร์ และสื่อสารภาษาอังกฤษ</div></div>
+        <div class="plo"><div class="id">PLO6</div><div class="t">สร้างซอฟต์แวร์หรือระบบสารสนเทศที่ก้าวทันเทคโนโลยี ใช้ประโยชน์เชิงพาณิชย์หรือสังคม</div></div>
+      </div>
+      <div class="card new">
+        <h3><span class="tag new">2569</span>&nbsp; 5 PLOs</h3>
+        <div class="plo"><div class="id">PLO1</div><div class="t">วิเคราะห์ความต้องการของผู้ใช้ และประเมินทางเลือกเชิงเทคนิคในการออกแบบระบบซอฟต์แวร์ ตามแนวปฏิบัติมาตรฐานและข้อจำกัดของอุตสาหกรรม<span class="en">Analysis and Design</span></div></div>
+        <div class="plo"><div class="id">PLO2</div><div class="t">พัฒนาซอฟต์แวร์ที่มีคุณภาพได้ทันกับเทคโนโลยีที่เปลี่ยนแปลงตามบริบทของงาน<span class="en">Development and Quality</span></div></div>
+        <div class="plo"><div class="id">PLO3</div><div class="t">สื่อสารในการทำงานเป็นทีมในบริบทจริงได้อย่างมีประสิทธิภาพ<span class="en">Teamwork and Communication</span></div></div>
+        <div class="plo"><div class="id">PLO4</div><div class="t">ปฏิบัติงานตามจรรยาบรรณวิชาชีพวิศวกรซอฟต์แวร์<span class="en">Ethics and Professionalism</span></div></div>
+        <div class="plo"><div class="id">PLO5</div><div class="t">แสดงสมรรถนะการเปลี่ยนแปลงตนเองอย่างรวดเร็ว และยืดหยุ่นในการทำงานร่วมกับภาคอุตสาหกรรม<span class="en">Adaptability and Learning</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 9 ======================================================= -->
+<section class="slide" data-title="โครงสร้างหน่วยกิต">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">โครงสร้างหลักสูตร</div>
+      <h2>ลดหมวดศึกษาทั่วไป เพิ่มวิชาชีพบังคับ</h2>
+    </div>
+    <div class="bars">
+      <div class="barrow">
+        <div class="lab"><span><span class="tag old">2564</span>&nbsp; รวม 126 หน่วยกิต</span></div>
+        <div class="stack" aria-label="โครงสร้าง 2564">
+          <div class="seg s-ge" style="flex:30">GE 30</div>
+          <div class="seg s-base" style="flex:9">9</div>
+          <div class="seg s-core" style="flex:63">วิชาชีพบังคับ 63</div>
+          <div class="seg s-elec" style="flex:9">9</div>
+          <div class="seg s-field" style="flex:9">9</div>
+          <div class="seg s-free" style="flex:6">6</div>
+          <div style="flex:0"></div>
+        </div>
+      </div>
+      <div class="barrow">
+        <div class="lab"><span><span class="tag new">2569</span>&nbsp; รวม 124 หน่วยกิต</span></div>
+        <div class="stack" aria-label="โครงสร้าง 2569" style="width:calc(100% * 124 / 126)">
+          <div class="seg s-ge" style="flex:24">GE 24</div>
+          <div class="seg s-base" style="flex:9">9</div>
+          <div class="seg s-core" style="flex:67">วิชาชีพบังคับ 67</div>
+          <div class="seg s-elec" style="flex:9">9</div>
+          <div class="seg s-field" style="flex:9">9</div>
+          <div class="seg s-free" style="flex:6">6</div>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="s-ge"></i>หมวดวิชาศึกษาทั่วไป</span>
+      <span><i class="s-base"></i>พื้นฐานวิชาชีพ</span>
+      <span><i class="s-core"></i>วิชาชีพบังคับ</span>
+      <span><i class="s-elec"></i>วิชาชีพเลือก</span>
+      <span><i class="s-field"></i>ประสบการณ์ภาคสนาม</span>
+      <span><i class="s-free"></i>เลือกเสรี</span>
+    </div>
+    <table class="cmp" style="margin-top:20px">
+      <colgroup><col style="width:34%"><col style="width:22%"><col style="width:15%"><col style="width:15%"><col style="width:14%"></colgroup>
+      <thead><tr><th>หมวดวิชา</th><th>เกณฑ์มาตรฐาน พ.ศ. 2565</th><th class="o">2564</th><th class="n">2569</th><th>เปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr><td class="k">หมวดวิชาศึกษาทั่วไป</td><td>ไม่น้อยกว่า 24</td><td>30</td><td class="n">24</td><td><span class="delta down">-6</span></td></tr>
+        <tr><td class="k">หมวดวิชาเฉพาะ</td><td>ไม่น้อยกว่า 72</td><td>90</td><td class="n">94</td><td><span class="delta up">+4</span></td></tr>
+        <tr><td>&nbsp;&nbsp;พื้นฐานวิชาชีพ / วิชาชีพบังคับ</td><td></td><td>9 / 63</td><td class="n">9 / 67</td><td><span class="delta up">+4 บังคับ</span></td></tr>
+        <tr><td>&nbsp;&nbsp;วิชาชีพเลือก / ประสบการณ์ภาคสนาม</td><td></td><td>9 / 9</td><td class="n">9 / 9</td><td>คงเดิม</td></tr>
+        <tr><td class="k">หมวดวิชาเลือกเสรี</td><td>ไม่น้อยกว่า 6</td><td>6</td><td class="n">6</td><td>คงเดิม</td></tr>
+        <tr><td class="k">รวม</td><td>ไม่น้อยกว่า 120</td><td><b>126</b></td><td class="n"><b>124</b></td><td><span class="delta down">-2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 10 ====================================================== -->
+<section class="slide" data-title="หมวดวิชาศึกษาทั่วไป">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">หมวดวิชาศึกษาทั่วไป</div>
+      <h2>GE 30 สู่ 24 หน่วยกิต ตามกรอบใหม่ของมหาวิทยาลัย</h2>
+    </div>
+    <div class="cols c2 grow">
+      <div class="card old">
+        <h3><span class="tag old">2564</span>&nbsp; 30 หน่วยกิต (กำหนดรายวิชา)</h3>
+        <ul class="small">
+          <li><b>กลุ่มภาษา 15:</b> ภาษาไทยเพื่อการสื่อสาร, ภาษาอังกฤษเพื่อการสื่อสาร 1 และ 2, ภาษาจีน 1 และ 2</li>
+          <li><b>กลุ่มมนุษยศาสตร์ 3:</b> จิตวิทยาในชีวิตประจำวัน</li>
+          <li><b>กลุ่มสังคมศาสตร์ 6:</b> การจัดการองค์กรและการเป็นผู้ประกอบการ, ความเป็นพลเมืองโลก</li>
+          <li><b>กลุ่มวิทยาศาสตร์กับคณิตศาสตร์ 6:</b> วิทยาศาสตร์และคณิตศาสตร์รอบตัว, เทคโนโลยีสารสนเทศและวิทยาการข้อมูลเบื้องต้น</li>
+          <li><b>กลุ่มบูรณาการ 0:</b> ความเป็นแม่ฟ้าหลวง (MFU Character)</li>
+        </ul>
+      </div>
+      <div class="card new">
+        <h3><span class="tag new">2569</span>&nbsp; 24 หน่วยกิต (บังคับ 15 + เลือก 9)</h3>
+        <ul class="small">
+          <li><b>วิชาบังคับ 15:</b> ภาษาอังกฤษเพื่อการสื่อสาร 1 และ 2, ภาษาจีน 1 และ 2, ความเป็นพลเมืองโลก (ยกเว้นวิชาภาษาได้ด้วยผลสอบตามประกาศมหาวิทยาลัย)</li>
+          <li><b>วิชาเลือก 9</b> จาก 5 กลุ่ม:
+            <ul>
+              <li>ภาษาและการสื่อสาร</li>
+              <li>ทักษะทางสังคม สิ่งแวดล้อม และการเป็นผู้ประกอบการ</li>
+              <li>ดิจิทัลและวิทยาการคำนวณ เช่น ปัญญาประดิษฐ์สำหรับการทำงานและการเรียนรู้ในชีวิตประจำวัน</li>
+              <li>ทักษะการใช้ชีวิตแบบมีคุณภาพและการออกแบบความคิด</li>
+              <li>ศิลปวัฒนธรรมและการออกแบบ</li>
+            </ul>
+          </li>
+          <li>หน่วยกิตที่ลดลงนำไปเพิ่มในกลุ่มวิชาชีพบังคับ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 11 ====================================================== -->
+<section class="slide" data-title="วิชาชีพบังคับ">
+  <div class="slide-inner">
+    <div class="head" style="margin-bottom:14px">
+      <div class="eyebrow">กลุ่มวิชาชีพบังคับ</div>
+      <h2>วิชาชีพบังคับ 63 สู่ 67 หน่วยกิต</h2>
+      <p class="lead small">2564 จัดเป็น 5 กลุ่มย่อย (องค์การและระบบสารสนเทศ, เทคโนโลยีเพื่องานประยุกต์, เทคโนโลยีและวิธีการทางซอฟต์แวร์, โครงสร้างพื้นฐาน, ฮาร์ดแวร์) ส่วน 2569 ไม่แบ่งกลุ่มย่อย</p>
+    </div>
+    <div class="board grow">
+      <div class="lane keep">
+        <h3>คงไว้ <span class="n">15</span></h3>
+        <div class="note">ปรับรหัส และปรับคำอธิบายรายวิชาให้ทันสมัย</div>
+        <ul>
+          <li>การโปรแกรมคอมพิวเตอร์</li>
+          <li>วิศวกรรมซอฟต์แวร์เบื้องต้น</li>
+          <li>การออกแบบและการเขียนโปรแกรมเชิงวัตถุ</li>
+          <li>โครงสร้างข้อมูลและอัลกอริธึม</li>
+          <li>การออกแบบ UI และ UX (เพิ่มภาคปฏิบัติ)</li>
+          <li>การวิเคราะห์ความต้องการและกำหนดคุณลักษณะทางซอฟต์แวร์</li>
+          <li>การออกแบบซอฟต์แวร์และสถาปัตยกรรมซอฟต์แวร์</li>
+          <li>การทดสอบซอฟต์แวร์</li>
+          <li>การประกันคุณภาพซอฟต์แวร์ (เดิม: กระบวนการซอฟต์แวร์และการประกันคุณภาพ)</li>
+          <li>การบริหารโครงการซอฟต์แวร์</li>
+          <li>กรณีศึกษาด้านวิศวกรรมซอฟต์แวร์</li>
+          <li>การวิวัฒน์และพัฒนาซอฟต์แวร์</li>
+          <li>สถาปัตยกรรมองค์กรและกลยุทธ์ดิจิทัล</li>
+          <li>โครงงานนักศึกษา 1 และ 2</li>
+        </ul>
+      </div>
+      <div class="lane move">
+        <h3>ย้ายจากวิชาเลือก <span class="n">2</span></h3>
+        <div class="note">เป็นวิชาบังคับที่ทุกคนต้องเรียน</div>
+        <ul>
+          <li>ความมั่นคงปลอดภัยซอฟต์แวร์<br><span class="en">Software Security</span></li>
+          <li>การคำนวณเชิงปัญญา<br><span class="en">Intelligent Computing</span></li>
+        </ul>
+      </div>
+      <div class="lane add">
+        <h3>เปิดใหม่ <span class="n">6</span></h3>
+        <div class="note">รายวิชาใหม่ในกลุ่มวิชาชีพบังคับ</div>
+        <ul>
+          <li>การพัฒนาแบบฟูลสแต็ก<br><span class="en">Full Stack Development</span></li>
+          <li>การพัฒนาข้ามแพลตฟอร์ม<br><span class="en">Cross-Platform Development</span></li>
+          <li>การจัดการฐานข้อมูล<br><span class="en">Database Management</span></li>
+          <li>การพัฒนาแอพพลิเคชันปัญญาประดิษฐ์<br><span class="en">AI Application Development (LLM, Generative AI)</span></li>
+          <li>วิศวกรรมแพลตฟอร์มและการพัฒนาแบบคลาวด์เนทีฟ<br><span class="en">Platform Engineering and Cloud-Native</span></li>
+          <li>สถาปัตยกรรมคอมพิวเตอร์และระบบปฏิบัติการ<br><span class="en">Computer Architecture and OS</span></li>
+        </ul>
+      </div>
+      <div class="lane cut">
+        <h3>ปรับออก <span class="n">7</span></h3>
+        <div class="note">เนื้อหาถูกรวมหรือแทนที่ด้วยรายวิชาใหม่</div>
+        <ul>
+          <li>กฎหมายและจรรยาบรรณสำหรับเทคโนโลยีสารสนเทศ</li>
+          <li>การพัฒนาเว็บแอปพลิเคชัน</li>
+          <li>การพัฒนาแอปพลิเคชันบนอุปกรณ์เคลื่อนที่</li>
+          <li>การพัฒนาแพลตฟอร์ม</li>
+          <li>สัมมนาวิศวกรรมซอฟต์แวร์</li>
+          <li>ระบบฐานข้อมูล</li>
+          <li>แก่นวิศวกรรมคอมพิวเตอร์</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 12 ====================================================== -->
+<section class="slide" data-title="วิชาชีพเลือก">
+  <div class="slide-inner">
+    <div class="head" style="margin-bottom:14px">
+      <div class="eyebrow">กลุ่มวิชาชีพเลือก (เลือก 9 หน่วยกิต)</div>
+      <h2>วิชาเลือก 21 สู่ 24 รายวิชา เน้น AI สถาปัตยกรรม และงานระดับองค์กร</h2>
+      <p class="lead small">คงไว้ 7 รายวิชา, เปิดใหม่ 17 รายวิชา, ย้ายไปเป็นวิชาบังคับ 2 รายวิชา, ปรับออก 12 รายวิชา (กลุ่มเกมและ VR, ข้อมูลและ AI ของสาขาวิศวกรรมคอมพิวเตอร์, การเจรจาต่อรอง, การสร้างภาพข้อมูลธุรกิจ)</p>
+    </div>
+    <div class="cols c3" style="gap:12px">
+      <div class="theme">
+        <h4>AI และข้อมูล</h4>
+        <ul>
+          <li><span class="tag ok">ใหม่</span>ปัญญาประดิษฐ์สำหรับวิศวกรรมซอฟต์แวร์</li>
+          <li><span class="tag ok">ใหม่</span>แบบจำลองภาษาขนาดใหญ่ (LLMs)</li>
+          <li><span class="tag ok">ใหม่</span>การประมวลผลภาพเพื่อการเรียนรู้ของเครื่อง</li>
+          <li><span class="tag ok">ใหม่</span>ปัญญาประดิษฐ์ที่ขับเคลื่อนด้วยข้อมูล</li>
+          <li><span class="tag ok">ใหม่</span>การวิเคราะห์ข้อมูลขั้นสูง</li>
+        </ul>
+      </div>
+      <div class="theme">
+        <h4>สถาปัตยกรรมและระบบขนาดใหญ่</h4>
+        <ul>
+          <li><span class="tag ok">ใหม่</span>สถาปัตยกรรมซอฟต์แวร์</li>
+          <li><span class="tag ok">ใหม่</span>ระบบแบบกระจายและไคลเอนต์-เซิร์ฟเวอร์</li>
+          <li><span class="tag ok">ใหม่</span>วิศวกรรมซอฟต์แวร์ขนาดใหญ่</li>
+          <li><span class="tag ok">ใหม่</span>การพัฒนาเว็บแอปพลิเคชันขั้นสูง</li>
+          <li><span class="tag old">คงไว้</span>การพัฒนาแอปพลิเคชันสำหรับองค์กร</li>
+        </ul>
+      </div>
+      <div class="theme">
+        <h4>ผู้ใช้และการออกแบบสารสนเทศ</h4>
+        <ul>
+          <li><span class="tag ok">ใหม่</span>การทดสอบการใช้งานและ HCI</li>
+          <li><span class="tag ok">ใหม่</span>สถาปัตยกรรมสารสนเทศ</li>
+          <li><span class="tag ok">ใหม่</span>การตลาดและการสื่อสารดิจิทัล</li>
+        </ul>
+      </div>
+      <div class="theme">
+        <h4>กระบวนการ ธุรกิจ และที่ปรึกษา</h4>
+        <ul>
+          <li><span class="tag old">คงไว้</span>การปรับปรุงกระบวนการซอฟต์แวร์</li>
+          <li><span class="tag old">คงไว้</span>การเป็นผู้ประกอบการธุรกิจด้านซอฟต์แวร์</li>
+          <li><span class="tag ok">ใหม่</span>การให้คำปรึกษาด้าน IT และกลยุทธ์</li>
+          <li><span class="tag ok">ใหม่</span>กลยุทธ์เชิงระบบ</li>
+        </ul>
+      </div>
+      <div class="theme">
+        <h4>ระบบอัตโนมัติ</h4>
+        <ul>
+          <li><span class="tag old">คงไว้</span>การพัฒนาแอพพลิเคชันด้วยวิธีโค้ดต่ำ</li>
+          <li><span class="tag old">คงไว้</span>กระบวนการทำงานอัตโนมัติด้วยวิทยาการหุ่นยนต์ (RPA)</li>
+        </ul>
+      </div>
+      <div class="theme">
+        <h4>หัวข้อทันสมัยและโครงงาน</h4>
+        <ul>
+          <li><span class="tag old">คงไว้</span>เทคโนโลยีกำเนิดใหม่สำหรับวิศวกรรมซอฟต์แวร์</li>
+          <li><span class="tag old">คงไว้</span>กรณีศึกษาในโลกแห่งความจริง</li>
+          <li><span class="tag ok">ใหม่</span>หัวข้อพิเศษ และหัวข้อขั้นสูงทางวิศวกรรมซอฟต์แวร์</li>
+          <li><span class="tag ok">ใหม่</span>โครงงานศึกษาค้นคว้าอิสระ (Individual Project)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 13 ====================================================== -->
+<section class="slide" data-title="ประสบการณ์ภาคสนาม">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">กลุ่มวิชาประสบการณ์ภาคสนาม (9 หน่วยกิต)</div>
+      <h2>ทุกเส้นทางเชื่อมกับการทำงานจริง</h2>
+      <p class="lead">นักศึกษาเลือก 1 เส้นทางในภาคการศึกษาปลายของชั้นปีที่ 4</p>
+    </div>
+    <div class="cols c3 grow">
+      <div class="card new">
+        <h3>สหกิจศึกษา</h3>
+        <p class="en" style="margin-bottom:10px">Co-operative Education 9(0-40-9)</p>
+        <p class="small">ปฏิบัติงานเต็มเวลาในสถานประกอบการ</p>
+        <p class="xsmall" style="margin-top:12px"><span class="tag old">2564</span> <span class="tag new">2569</span>&nbsp; มีทั้งสองฉบับ</p>
+      </div>
+      <div class="card new">
+        <h3>ฝึกงานต่างประเทศ</h3>
+        <p class="en" style="margin-bottom:10px">Overseas Training 9(0-40-9)</p>
+        <p class="small">ฝึกปฏิบัติงานในต่างประเทศ เสริมทักษะการทำงานข้ามวัฒนธรรม</p>
+        <p class="xsmall" style="margin-top:12px"><span class="tag old">2564</span> <span class="tag new">2569</span>&nbsp; มีทั้งสองฉบับ</p>
+      </div>
+      <div class="card new" style="background:var(--ok-soft)">
+        <h3>โครงงานบูรณาการอุตสาหกรรม</h3>
+        <p class="en" style="margin-bottom:10px">Industry Integration Project 9(0-40-9)</p>
+        <p class="small">รายวิชาใหม่ใน 2569 แทนที่ "โครงการวิจัยด้านวิศวกรรมซอฟต์แวร์" (Research Project in Software Engineering) ของ 2564 เน้นโจทย์จากภาคอุตสาหกรรม</p>
+        <p class="xsmall" style="margin-top:12px"><span class="tag ok">ใหม่ 2569</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 14 ====================================================== -->
+<section class="slide" data-title="แผนการศึกษา 2569">
+  <div class="slide-inner">
+    <div class="head" style="margin-bottom:12px">
+      <div class="eyebrow">แผนการศึกษา หลักสูตร 2569</div>
+      <h2>เส้นทางการเรียน 4 ปี (124 หน่วยกิต)</h2>
+    </div>
+    <div class="plan">
+      <div class="yearcol"><div class="yh">ชั้นปีที่ 1</div>
+        <div class="sem"><div class="sh"><span>ภาคต้น</span><span>15</span></div><ul>
+          <li class="ge">ภาษาอังกฤษเพื่อการสื่อสาร 1</li><li class="ge">GE เลือก 2 วิชา</li>
+          <li class="se">วิศวกรรมซอฟต์แวร์เบื้องต้น</li><li class="se">การโปรแกรมคอมพิวเตอร์</li></ul></div>
+        <div class="sem"><div class="sh"><span>ภาคปลาย</span><span>18</span></div><ul>
+          <li class="ge">ภาษาอังกฤษเพื่อการสื่อสาร 2</li><li class="ge">GE เลือก 1 วิชา</li><li class="ge">คณิตศาสตร์สำหรับวิศวกรรม 1</li>
+          <li class="se">การออกแบบ UI และ UX</li><li class="se">การออกแบบและเขียนโปรแกรมเชิงวัตถุ</li><li class="se">โครงสร้างข้อมูลและอัลกอริธึม</li></ul></div>
+      </div>
+      <div class="yearcol"><div class="yh">ชั้นปีที่ 2</div>
+        <div class="sem"><div class="sh"><span>ภาคต้น</span><span>18</span></div><ul>
+          <li class="ge">ภาษาจีน 1</li><li class="ge">คณิตศาสตร์สำหรับวิศวกรรม 2</li>
+          <li class="se">การวิเคราะห์ความต้องการทางซอฟต์แวร์</li><li class="nw">การจัดการฐานข้อมูล</li><li class="nw">การพัฒนาแบบฟูลสแต็ก</li><li class="el">วิชาเลือกเสรี 1</li></ul></div>
+        <div class="sem"><div class="sh"><span>ภาคปลาย</span><span>18</span></div><ul>
+          <li class="ge">ภาษาจีน 2</li><li class="se">การคำนวณเชิงปัญญา</li><li class="se">การออกแบบซอฟต์แวร์และสถาปัตยกรรม</li>
+          <li class="se">การทดสอบซอฟต์แวร์</li><li class="nw">การพัฒนาข้ามแพลตฟอร์ม</li><li class="nw">สถาปัตยกรรมคอมพิวเตอร์และระบบปฏิบัติการ</li></ul></div>
+      </div>
+      <div class="yearcol"><div class="yh">ชั้นปีที่ 3</div>
+        <div class="sem"><div class="sh"><span>ภาคต้น</span><span>21</span></div><ul>
+          <li class="ge">ความเป็นพลเมืองโลก</li><li class="ge">ความน่าจะเป็นและสถิติ</li>
+          <li class="nw">การพัฒนาแอพพลิเคชันปัญญาประดิษฐ์</li><li class="nw">วิศวกรรมแพลตฟอร์มและคลาวด์เนทีฟ</li>
+          <li class="se">การประกันคุณภาพซอฟต์แวร์</li><li class="se">กรณีศึกษาด้านวิศวกรรมซอฟต์แวร์</li><li class="el">วิชาเลือกเสรี 2</li></ul></div>
+        <div class="sem"><div class="sh"><span>ภาคปลาย</span><span>17</span></div><ul>
+          <li class="se">สถาปัตยกรรมองค์กรและกลยุทธ์ดิจิทัล</li><li class="se">ความมั่นคงปลอดภัยซอฟต์แวร์</li><li class="se">การบริหารโครงการซอฟต์แวร์</li>
+          <li class="se">การวิวัฒน์และพัฒนาซอฟต์แวร์</li><li class="se">โครงงานนักศึกษา 1</li><li class="el">วิชาชีพเลือก 1</li></ul></div>
+      </div>
+      <div class="yearcol"><div class="yh">ชั้นปีที่ 4</div>
+        <div class="sem"><div class="sh"><span>ภาคต้น</span><span>8</span></div><ul>
+          <li class="se">โครงงานนักศึกษา 2</li><li class="el">วิชาชีพเลือก 2</li><li class="el">วิชาชีพเลือก 3</li></ul></div>
+        <div class="sem"><div class="sh"><span>ภาคปลาย</span><span>9</span></div><ul>
+          <li class="se">สหกิจศึกษา หรือ ฝึกงานต่างประเทศ หรือ โครงงานบูรณาการอุตสาหกรรม</li></ul></div>
+      </div>
+    </div>
+    <div class="legend" style="margin-top:10px">
+      <span><i style="background:var(--new)"></i>วิชาชีพ (มีใน 2564)</span>
+      <span><i style="background:var(--ok)"></i>วิชาบังคับเปิดใหม่ใน 2569</span>
+      <span><i style="background:#9aa5b5"></i>ศึกษาทั่วไปและพื้นฐาน</span>
+      <span><i style="background:var(--gold)"></i>วิชาเลือก</span>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 15 ====================================================== -->
+<section class="slide" data-title="การจัดการเรียนรู้">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">การจัดการเรียนรู้และการประเมินผล (2569)</div>
+      <h2>กลยุทธ์การสอนผูกกับ PLO แต่ละข้อ</h2>
+    </div>
+    <table class="la">
+      <thead><tr><th>ผลลัพธ์ตามมาตรฐานคุณวุฒิ</th><th>PLO</th><th>กลยุทธ์การจัดการเรียนรู้หลัก</th></tr></thead>
+      <tbody>
+        <tr><td>ด้านความรู้</td><td>PLO1 Analysis and Design</td><td>Problem-Based Learning จากโจทย์จริงที่ยังไม่ชัดเจน, Case-Based Learning เปรียบเทียบสถาปัตยกรรมขององค์กรจริง, Workshop สร้างแบบจำลองและต้นแบบด้วยเครื่องมือมาตรฐานอุตสาหกรรม</td></tr>
+        <tr><td>ด้านทักษะ</td><td>PLO2 Development and Quality</td><td>การเรียนรู้ผ่านการปฏิบัติ (Practice-Based Learning) พัฒนาซอฟต์แวร์ด้วยเครื่องมือและกระบวนการคุณภาพ</td></tr>
+        <tr><td></td><td>PLO3 Teamwork and Communication</td><td>การเรียนรู้แบบร่วมมือในสถานการณ์จริง ทำงานเป็นทีมและนำเสนอต่อผู้มีส่วนได้เสีย</td></tr>
+        <tr><td>ด้านจริยธรรม</td><td>PLO4 Ethics and Professionalism</td><td>การเรียนรู้จากสถานการณ์ขัดแย้งทางจริยธรรมในงานซอฟต์แวร์ อ้างอิงจรรยาบรรณ IEEE/ACM</td></tr>
+        <tr><td>ด้านลักษณะบุคคล</td><td>PLO5 Adaptability and Learning</td><td>การเรียนรู้ที่นำโดยตนเอง (Self-Directed Learning) ติดตามเทคโนโลยีใหม่และทำงานร่วมกับภาคอุตสาหกรรม</td></tr>
+      </tbody>
+    </table>
+    <div class="cols c2" style="margin-top:18px">
+      <div class="card soft"><h3>การประเมินเพื่อพัฒนา (Formative)</h3><p class="small">ให้ Feedback ระหว่างทำงาน สังเกตกระบวนการใน Workshop และให้นักศึกษาประเมินตนเองหลังกิจกรรม</p></div>
+      <div class="card soft"><h3>การประเมินเพื่อสรุปผล (Summative)</h3><p class="small">ตรวจผลงานและต้นแบบด้วย Rubric, สอบป้องกันแนวทางการออกแบบ (Design Defense), และใช้ Exit Survey และ Alumni Survey เป็นหลักฐานทางอ้อม</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 16 ====================================================== -->
+<section class="slide" data-title="อาชีพหลังสำเร็จการศึกษา">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">อาชีพหลังสำเร็จการศึกษา</div>
+      <h2>จากรายชื่ออาชีพ สู่สายงาน 7 กลุ่ม</h2>
+    </div>
+    <div class="cols" style="grid-template-columns:1fr 1.25fr;gap:22px">
+      <div class="card old">
+        <h3><span class="tag old">2564</span>&nbsp; 18 อาชีพ</h3>
+        <ul class="cl">
+          <li>Software Engineer</li><li>System Analyst/Designer</li><li>Requirements Engineer</li><li>Software Tester</li>
+          <li>Software Project Manager</li><li>Solution/Sales Engineer</li><li>IT Auditor</li><li>IT Manager</li>
+          <li>Software Business Entrepreneur</li><li>UX/UI Designer</li><li>Programmer/Developer</li><li>Enterprise Solution Developer</li>
+          <li>Software Architect</li><li>Web/Mobile Developer</li><li>Full-stack Developer</li><li>Software Quality Assurance</li>
+          <li>Software Process Improvement Engineer</li><li>DevOps Engineer</li>
+        </ul>
+      </div>
+      <div class="card new">
+        <h3><span class="tag new">2569</span>&nbsp; 7 สายงาน</h3>
+        <div class="cols c2" style="gap:4px 20px">
+          <div class="track"><b>พัฒนาและวิศวกรรมซอฟต์แวร์</b><div>Software Engineer, Software Developer, QA Engineer, Mobile Developer, Web Developer</div></div>
+          <div class="track"><b>ข้อมูลและปัญญาประดิษฐ์</b><div>Data Engineer, Data Analyst, AI Developer, Prompt Engineer</div></div>
+          <div class="track"><b>โครงสร้างพื้นฐานและการปฏิบัติงาน</b><div>DevOps Engineer, Cloud Engineer</div></div>
+          <div class="track"><b>บริหารจัดการและวิเคราะห์ระบบ</b><div>System Analyst, Software Project Manager, Product Manager</div></div>
+          <div class="track"><b>วิจัยและพัฒนา</b><div>Software R&amp;D Specialist</div></div>
+          <div class="track"><b>ออกแบบและประสบการณ์ผู้ใช้</b><div>UI/UX Designer</div></div>
+          <div class="track"><b>ธุรกิจและที่ปรึกษา</b><div>Software Entrepreneur, IT Consultant</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+<!-- 17 ====================================================== -->
+<section class="slide" data-title="การเปลี่ยนผ่านและแหล่งข้อมูล">
+  <div class="slide-inner">
+    <div class="head">
+      <div class="eyebrow">การเปลี่ยนผ่าน</div>
+      <h2>หลักสูตรทั้งสองฉบับใช้คู่ขนานในช่วงเปลี่ยนผ่าน</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl"><div class="when">ปีการศึกษา 2564 ถึง 2568</div><div class="what">นักศึกษาที่เข้าศึกษาในช่วงนี้เรียนตามหลักสูตร 2564 จนสำเร็จการศึกษา</div></div>
+      <div class="tl n"><div class="when">ภาคต้น ปีการศึกษา 2569</div><div class="what">หลักสูตร 2569 เริ่มใช้กับนักศึกษารุ่นปีการศึกษา 2569 เป็นต้นไป</div></div>
+      <div class="tl n"><div class="when">ต่อเนื่อง</div><div class="what">ทบทวนหลักสูตรด้วยข้อมูลจากผู้มีส่วนได้เสีย ผลการเรียนรู้ราย PLO และการประกันคุณภาพ AUN-QA</div></div>
+    </div>
+    <div class="cols c2">
+      <div class="card soft">
+        <h3>แหล่งข้อมูลของเอกสารนี้</h3>
+        <ul class="small">
+          <li>มคอ.2 หลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิชาวิศวกรรมซอฟต์แวร์ หลักสูตรปรับปรุง พ.ศ. 2564</li>
+          <li>มคอ.2 หลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิชาวิศวกรรมซอฟต์แวร์ หลักสูตรปรับปรุง พ.ศ. 2569 รวมภาคผนวก 1 (รายละเอียดการปรับปรุง ตารางเปรียบเทียบ และการวิเคราะห์ความต้องการของผู้มีส่วนได้เสีย)</li>
+        </ul>
+        <p class="xsmall" style="margin-top:8px;color:var(--muted)">รายวิชาและหน่วยกิตเป็นไปตาม มคอ.2 ฉบับที่ได้รับอนุมัติ หากมีข้อแตกต่าง ให้ยึดเอกสาร มคอ.2 และประกาศของมหาวิทยาลัยเป็นหลัก</p>
+      </div>
+      <div class="card new">
+        <h3>ขอบคุณผู้มีส่วนได้เสียทุกท่าน</h3>
+        <p class="small">ความคิดเห็นของผู้ทรงคุณวุฒิ ผู้ใช้บัณฑิต ศิษย์เก่า อาจารย์ และนักศึกษา เป็นข้อมูลหลักในการปรับปรุงหลักสูตรฉบับนี้ และจะใช้ในการทบทวนหลักสูตรรอบถัดไป</p>
+        <p class="small" style="margin-top:10px"><b>สาขาวิชาวิศวกรรมซอฟต์แวร์</b><br>สำนักวิชาเทคโนโลยีดิจิทัลประยุกต์ มหาวิทยาลัยแม่ฟ้าหลวง</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>หลักสูตร วศ.บ. วิศวกรรมซอฟต์แวร์ มฟล.</span><span class="pg"></span></div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var body = document.body;
+  var idx = 0;
+  var W = 1280, H = 720;
+  var counter = document.getElementById('counter');
+  var progress = document.getElementById('progress');
+  var modeBtn = document.getElementById('mode');
+
+  slides.forEach(function(s, i){
+    var pg = s.querySelector('.pg');
+    if (pg) pg.textContent = (i + 1) + ' / ' + slides.length;
+    s.id = 's' + (i + 1);
+  });
+
+  function store(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+  function load(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  function fit(){
+    if (!body.classList.contains('present')) return;
+    var s = Math.min(window.innerWidth / W, (window.innerHeight - 8) / H) * 0.96;
+    slides.forEach(function(el){
+      el.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+    });
+  }
+  function show(i){
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function(el, j){ el.classList.toggle('active', j === idx); });
+    counter.textContent = (idx + 1) + ' / ' + slides.length;
+    progress.style.width = ((idx + 1) / slides.length * 100) + '%';
+    if (body.classList.contains('present') && history.replaceState) history.replaceState(null, '', '#' + (idx + 1));
+  }
+  function setMode(m){
+    body.classList.remove('present', 'flow');
+    body.classList.add(m);
+    modeBtn.textContent = m === 'present' ? 'มุมมองเลื่อนอ่าน' : 'มุมมองสไลด์';
+    slides.forEach(function(el){ el.style.transform = ''; });
+    if (m === 'present') { fit(); show(idx); }
+    else { window.scrollTo(0, slides[idx].offsetTop - 60); }
+  }
+
+  var startHash = parseInt((location.hash || '').replace('#', ''), 10);
+  if (startHash >= 1 && startHash <= slides.length) idx = startHash - 1;
+
+  var narrow = window.matchMedia('(max-width: 900px)').matches;
+  var saved = load('se-curr-mode');
+  setMode(narrow ? 'flow' : (saved === 'flow' ? 'flow' : 'present'));
+
+  document.getElementById('prev').addEventListener('click', function(){ show(idx - 1); });
+  document.getElementById('next').addEventListener('click', function(){ show(idx + 1); });
+  modeBtn.addEventListener('click', function(){
+    var m = body.classList.contains('present') ? 'flow' : 'present';
+    if (m === 'present') {
+      var y = window.scrollY + 80, k = 0;
+      slides.forEach(function(el, j){ if (el.offsetTop <= y) k = j; });
+      idx = k;
+    }
+    store('se-curr-mode', m);
+    setMode(m);
+  });
+  document.addEventListener('keydown', function(e){
+    if (!body.classList.contains('present')) return;
+    if (['ArrowRight','PageDown',' ','Enter'].indexOf(e.key) > -1) { e.preventDefault(); show(idx + 1); }
+    else if (['ArrowLeft','PageUp','Backspace'].indexOf(e.key) > -1) { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+  });
+  var tx = null;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (tx === null || !body.classList.contains('present')) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) show(idx + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
+  window.addEventListener('resize', fit);
+  window.addEventListener('beforeprint', function(){ slides.forEach(function(el){ el.style.transform = 'none'; }); });
+  window.addEventListener('afterprint', fit);
+})();
+</script>
+</body>
+</html>
